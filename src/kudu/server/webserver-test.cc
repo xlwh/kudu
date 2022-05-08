@@ -103,7 +103,7 @@ class WebserverTest : public KuduTest {
 
     AddPreInitializedDefaultPathHandlers(server_.get());
     AddPostInitializedDefaultPathHandlers(server_.get());
-    if (!use_htpasswd() || !FIPS_mode()) {
+    if (!use_htpasswd()) {
       ASSERT_OK(server_->Start());
 
       vector<Sockaddr> addrs;
@@ -155,27 +155,17 @@ class PasswdWebserverTest : public WebserverTest {
 // Send a HTTP request with no username and password. It should reject
 // the request as the .htpasswd is presented to webserver.
 TEST_F(PasswdWebserverTest, TestPasswdMissing) {
-  if (FIPS_mode()) {
-    return;
-  }
   Status status = curl_.FetchURL(url_, &buf_);
   ASSERT_EQ("Remote error: HTTP 401", status.ToString());
 }
 
 TEST_F(PasswdWebserverTest, TestPasswdPresent) {
-  if (FIPS_mode()) {
-    return;
-  }
   ASSERT_OK(curl_.set_auth(CurlAuthType::DIGEST, security::kTestAuthUsername,
                            security::kTestAuthPassword));
   ASSERT_OK(curl_.FetchURL(addr_.ToString(), &buf_));
 }
 
 TEST_F(PasswdWebserverTest, TestCrashInFIPSMode) {
-  if (!FIPS_mode()) {
-    return;
-  }
-
   Status s = server_->Start();
   ASSERT_TRUE(s.IsIllegalState()) << s.ToString();
   ASSERT_STR_CONTAINS(s.ToString(), "Digest authentication in FIPS approved mode");

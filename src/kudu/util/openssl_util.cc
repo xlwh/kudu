@@ -95,15 +95,15 @@ void ThreadIdCB(CRYPTO_THREADID* tid) {
 #endif
 
 void CheckFIPSMode() {
-  auto fips_mode = FIPS_mode();
-  // If the environment variable KUDU_REQUIRE_FIPS_MODE is set to "1", we
-  // check if FIPS approved mode is enabled. If not, we crash the process.
-  // As this is used in clients as well, we can't use gflags to set this.
-  if (GetBooleanEnvironmentVariable("KUDU_REQUIRE_FIPS_MODE")) {
-    CHECK(fips_mode) << "FIPS mode required by environment variable "
-                        "KUDU_REQUIRE_FIPS_MODE, but it is not enabled.";
-  }
-  VLOG(2) << "FIPS mode is " << (fips_mode ? "enabled" : "disabled.");
+//  auto fips_mode = FIPS_mode();
+//  // If the environment variable KUDU_REQUIRE_FIPS_MODE is set to "1", we
+//  // check if FIPS approved mode is enabled. If not, we crash the process.
+//  // As this is used in clients as well, we can't use gflags to set this.
+//  if (GetBooleanEnvironmentVariable("KUDU_REQUIRE_FIPS_MODE")) {
+//    CHECK(fips_mode) << "FIPS mode required by environment variable "
+//                        "KUDU_REQUIRE_FIPS_MODE, but it is not enabled.";
+//  }
+//  VLOG(2) << "FIPS mode is " << (fips_mode ? "enabled" : "disabled.");
 }
 
 Status CheckOpenSSLInitialized() {
